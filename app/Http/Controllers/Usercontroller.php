@@ -63,7 +63,7 @@ class Usercontroller extends Controller
     public function edit(string $id)
     {
         $data['cari'] = User::find($id);
-        return view('user.edit', $data);
+        return view('users.edit', $data);
     }
 
     /**
@@ -86,7 +86,7 @@ class Usercontroller extends Controller
                 'password'=>Hash::make($request->password)
             ]);
         }
-        return redirect()->route('users');
+        return redirect()->route('user');
     }
 
     /**
@@ -96,6 +96,6 @@ class Usercontroller extends Controller
     {
         $cari=User::find($id);
         $cari->delete();
-        return redirect()->route('users');
+        return redirect()->route('user');
     }
 }

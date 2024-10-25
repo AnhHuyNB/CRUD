@@ -2,7 +2,7 @@
 @section('title', 'Edit User - CURD LARAVEL 11')
 @section('content')
     <h3>Edit User</h1>
-        <form action="{{ route('users.update'), $cari->id}}" method="POST">
+        <form action="{{ route('users.update', $cari->id)}}" method="POST">
             @csrf
             @method('PUT')
             <div class="mb-3">
