@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Repositories\PostRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,7 +29,7 @@ class Usercontroller extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request,PostRepository $repository)
     {
         $request->validate([
             'name'=>'required',
@@ -40,12 +41,12 @@ class Usercontroller extends Controller
             'password.required' => 'Password không hợp lệ'
         ]);
 
-        User::create([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=>Hash::make($request->password)
-        ]);
-
+        $repository->create($request->only([
+            'name',
+            'email',
+            'password'
+        ]));
+        
         return redirect()->route('user');
     }
 
@@ -69,33 +70,22 @@ class Usercontroller extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id, PostRepository $repository)
     {
-        $password=$request->password;
-        if(empty($password)){
-            $cari=User::find($id);
-            $cari->update([
-                'name'=>$request->name,
-                'email'=>$request->email
-            ]);
-        }else{
-            $cari=User::find($id);
-            $cari->update([
-                'name'=>$request->name,
-                'email'=>$request->email,
-                'password'=>Hash::make($request->password)
-            ]);
-        }
+        $repository->update($request->only([
+            'email',
+            'password',
+            'name',
+        ]), $id);
         return redirect()->route('user');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, PostRepository $repository)
     {
-        $cari=User::find($id);
-        $cari->delete();
+        $repository->forceDelete($id);
         return redirect()->route('user');
     }
 }
