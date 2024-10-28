@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Usercontroller;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('langChange', [LocaleController::class, 'langChange'])->name('langChange');
 
 
 Route::get('/users', [Usercontroller::class, 'index'])->name('user');
@@ -14,3 +17,5 @@ Route::get('/users/create', [Usercontroller::class, 'create'])->name('users.crea
 Route::delete('/users/destroy/{id}', [Usercontroller::class, 'destroy'])->name('users.destroy');
 Route::get('/users/{id}/edit', [Usercontroller::class, 'edit'])->name('users.edit');
 Route::put('/users/update/{id}', [Usercontroller::class, 'update'])->name('users.update');
+
+
